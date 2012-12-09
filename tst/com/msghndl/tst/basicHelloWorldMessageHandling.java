@@ -1,7 +1,5 @@
 package com.msghndl.tst;
 
-import com.msghndl.src.*;
-import static org.junit.Assert.*;
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -27,5 +25,14 @@ public class basicHelloWorldMessageHandling {
 		String result = handler.process(message);
 		
 		Assert.assertEquals("10", result);
+	}
+	
+	@Test
+	public void handleToUpperCaseMessage() throws Exception {
+		String message = "toupperEND" + "hello world";
+		MessageProcessor handler = new MessageProcessor();
+		String result = handler.process(message);
+		
+		Assert.assertEquals("HELLO WORLD", result);
 	}
 }

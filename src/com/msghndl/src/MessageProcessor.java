@@ -26,7 +26,8 @@ public class MessageProcessor {
 		
 		// TODO This array should be populated automatically using reflections rather than hard-coding.
 		String[] messageHandlerClasses = {"com.msghndl.handler.EchoMessageHandler",
-											"com.msghndl.handler.CharacterCountHandler"};
+											"com.msghndl.handler.CharacterCountHandler",
+											"com.msghndl.handler.ToUpperCaseHandler"};
 		
 		for (String hndlclass : messageHandlerClasses) {
 			Annotation[] clsAnns = Class.forName(hndlclass).getAnnotations();

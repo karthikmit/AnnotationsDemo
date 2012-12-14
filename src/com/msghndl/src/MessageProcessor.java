@@ -3,6 +3,9 @@ package com.msghndl.src;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+
+import org.reflections.Reflections;
 
 import com.msghndl.annotations.Handler;
 import com.msghndl.handler.MessageHandler;
@@ -24,17 +27,15 @@ public class MessageProcessor {
 									InstantiationException, IllegalAccessException {
 		// Idea is to go through all Handlers at run-time and fill this up.
 		
-		// TODO This array should be populated automatically using reflections rather than hard-coding.
-		String[] messageHandlerClasses = {"com.msghndl.handler.EchoMessageHandler",
-											"com.msghndl.handler.CharacterCountHandler",
-											"com.msghndl.handler.ToUpperCaseHandler"};
+		Reflections reflections = new Reflections("com.msghndl.handler");
+		Set<Class<?>> hndlClasses = reflections.getTypesAnnotatedWith(com.msghndl.annotations.Handler.class);
 		
-		for (String hndlclass : messageHandlerClasses) {
-			Annotation[] clsAnns = Class.forName(hndlclass).getAnnotations();
+		for (Class<?> hndlclass : hndlClasses) {
+			Annotation[] clsAnns = hndlclass.getAnnotations();
 			
 			for (Annotation annotation : clsAnns) {
 				if(annotation instanceof Handler) {
-					commandHandlerMap.put(((Handler)annotation).value(), (MessageHandler) Class.forName(hndlclass).newInstance());
+					commandHandlerMap.put(((Handler)annotation).value(), (MessageHandler) hndlclass.newInstance());
 				}
 			}
 		}
